@@ -1,0 +1,22 @@
+body {
+	background-color: #4BF0F2;
+}
+
+.title {
+	color: white;
+	text-align: center;
+}
+
+.menu {
+	text-align: center;
+}
+
+#product-container {
+  margin: 50px 10%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  text-align: center;
+  padding: 2% 0;
+  text-align: center;
+}
