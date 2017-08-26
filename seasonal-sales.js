@@ -63,10 +63,9 @@ function writeToDom(string){
 	productContainer.innerHTML = string;
 }
 
-/*winterButton.addEventListener('click', function(e){
-	
-})
-*/
+//* DISCOUNT SECTION*//
+/*products.price*/
+
 function executeThisCodeAfterFileLoads(){
 	var data = JSON.parse(this.responseText);
 	// console.log(data);
