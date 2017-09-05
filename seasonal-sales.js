@@ -3,38 +3,31 @@ console.log("Whoami");
 var products = [];
 var categories = [];
 var numOfXHRLoaded = 0;
-var productContainer = document.getElementById("product-container");
-var winterButton = document.getElementById("winter");
-var autumnButton = document.getElementById("autumn");
-var springButton = document.getElementById("spring");
 
-function decideDataType(dataFromArray){
-	console.log("HEY");
-	var dataType = "product";
-	for(var i=0; i<dataFromArray.length; i++){
-		if(dataFromArray[i].season_discount){
-			dataType = "category";
+// Build domstring
+function productString(stuff){
+	var domString = "";
+	for(var i=0; i<stuff.length; i++){
+		domString += `<div id="product-container">`;
+		domString +=   `<h4 class="name">${stuff[i].name}</h4>`;
+		domString +=   `<h4 class="price">${stuff[i].price}</h4>`;
+		domString += `</div>`;
 		}
-	}
-	if (dataType === "product") {
-		products = dataFromArray;
-	}else if (dataType = "category") {
-		categories = dataFromArray;
-	}
-	numOfXHRLoaded++;
-	if (numOfXHRLoaded === 2){
-		addCategoriesToProduct();
-	}
-
+		writeToDom(domString);
 }
-	
 
+//Domstring prints to the page into the product container element
+function writeToDom(string){
+	var productContainer = document.getElementById("product-container");
+	productContainer.innerHTML = string;
+}
+
+//Combining categories and products
 function addCategoriesToProduct () {
 	console.log("products");
 	for(var i=0; i<products.length; i++) {
-
-	for(var j=0; j<categories.length; j++) {
-		if(categories[j].id === products[i]["category_id"]) {
+		for(var j=0; j<categories.length; j++) {
+		if (products[i]["category_id"] === categories[j].id){
 			products[i].categoryName = categories[j].name;
 			products[i].categorySeasonal = categories[j]["season_discount"];
 			products[i].categoryPrice = categories[j].price;
@@ -45,38 +38,13 @@ function addCategoriesToProduct () {
   productString();
 }
 
-function productString(){
-	console.log("products");
-	var domString = "";
-	for(var i=0; i<products.length; i++){
-		domString += `<div id="product-container">`;
-		domString +=   `<h4 class="name">${products[i].name}</h4>`;
-		domString +=   `<h4 class="price">${products[i].price}</h4>`;
-		domString +=   `<h4 class="cost">${products[i].categoryName}</hr>`;
-		domString += `</div>`;
-		}
 
-		writeToDom(domString);
-}
-
-function writeToDom(string){
-	productContainer.innerHTML = string;
-}
-
-//* DISCOUNT SECTION*//
-/*products.price*/
-
+// XHR //
 function executeThisCodeAfterFileLoads(){
-	var data = JSON.parse(this.responseText);
-	// console.log(data);
-	decideDataType(data.products);
+	var productsData = JSON.parse(this.responseText).products;
+	console.log(productsData);
+	productString(productsData);
 } 
-
-function executeThisCodeAfterFileLoads2(){
-	var data = JSON.parse(this.responseText);
-	// console.log(data);
-	decideDataType(data.categories);
-}
 
 function executeThisCodeIfFileErrors(){
 	console.log("Broken!!!!");
@@ -88,8 +56,27 @@ myRequest.addEventListener("error", executeThisCodeIfFileErrors);
 myRequest.open("GET", "products.json");
 myRequest.send();
 
-var myRequest2 = new XMLHttpRequest();
-myRequest2.addEventListener("load", executeThisCodeAfterFileLoads2);
-myRequest2.addEventListener("error", executeThisCodeIfFileErrors);
-myRequest2.open("GET", "categories.json");
-myRequest2.send();
+function getCategories(products){
+	var myRequest2 = new XMLHttpRequest();
+	myRequest2.addEventListener("load", executeThisCodeAfterFileLoads2);
+	myRequest2.addEventListener("error", executeThisCodeIfFileErrors);
+	myRequest2.open("GET", "categories.json");
+	myRequest2.send();
+
+	function executeThisCodeAfterFileLoads2(){
+		var categoriesData = JSON.parse(this.responseText).categories;
+		console.log(data);
+		productString(categoriesData);
+	}
+}
+
+
+
+	
+
+
+
+
+//* DISCOUNT SECTION*//
+/*products.price*/
+
