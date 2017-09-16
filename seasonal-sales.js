@@ -9,8 +9,8 @@ function productString(stuff){
 	var domString = "";
 	for(var i=0; i<stuff.length; i++){
 		domString += `<div id="product-container">`;
-		domString +=   `<h4 class="name">${stuff[i].name}</h4>`;
-		domString +=   `<h4 class="price">${stuff[i].price}</h4>`;
+		domString +=   `<h4>${stuff[i].name}</h4>`;
+		domString +=   `<h4>${stuff[i].price}</h4>`;
 		domString += `</div>`;
 		}
 		writeToDom(domString);
